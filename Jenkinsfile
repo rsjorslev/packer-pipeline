@@ -1,20 +1,11 @@
 pipeline {
   agent any
-  environment {
-    PACKER = tool('packer100')
-  }
-  parameters {
-    string(name: 'PACKERFILE', defaultValue: 'packer.json')
-  }
-  tools {
-    nodejs 'Node 7.10.0'
-  }
   stages {
     stage('Pre-Start') {
       steps {
         sh 'printenv'
         sh '${PACKER}/packer -v'
-        echo "Packer File ${params.PACKERFILE}"
+        echo 'Packer File ${params.PACKERFILE}'
       }
     }
     stage('Validate') {
@@ -32,5 +23,14 @@ pipeline {
         archiveArtifacts(artifacts: '*.txt', allowEmptyArchive: true, fingerprint: true)
       }
     }
+  }
+  tools {
+    nodejs 'Node 7.10.0'
+  }
+  environment {
+    PACKER = tool('packer100')
+  }
+  parameters {
+    string(name: 'PACKERFILE', defaultValue: 'packer.json')
   }
 }
