@@ -10,7 +10,7 @@ date > date.txt'''
     }
     stage('Archive') {
       steps {
-        archiveArtifacts(artifacts: '/**/*.txt', allowEmptyArchive: true, fingerprint: true)
+        archiveArtifacts(artifacts: '/*.txt', allowEmptyArchive: true, fingerprint: true)
       }
     }
   }
