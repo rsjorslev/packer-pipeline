@@ -28,5 +28,6 @@ pipeline {
   }
   environment {
     PACKER = tool('packer100')
+    ESXI_CREDS = credentials('nesxi-root')
   }
 }
