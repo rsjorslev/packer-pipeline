@@ -1,5 +1,11 @@
 pipeline {
   agent any
+  environment {
+    PACKER = tool('packer100')
+  }
+  tools {
+    nodejs 'Node 7.10.0'
+  }
   stages {
     stage('Pre-Start') {
       steps {
@@ -22,11 +28,5 @@ pipeline {
         archiveArtifacts(artifacts: '*.txt', allowEmptyArchive: true, fingerprint: true)
       }
     }
-  }
-  tools {
-    nodejs 'Node 7.10.0'
-  }
-  environment {
-    PACKER = tool('packer100')
   }
 }
