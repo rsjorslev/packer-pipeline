@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  tools {
+    nodejs 'Node 7.10.0'
+    packer 'packer100'
+  }
   stages {
     stage('Validate') {
       steps {
@@ -14,8 +18,5 @@ pipeline {
         archiveArtifacts(artifacts: '*.txt', allowEmptyArchive: true, fingerprint: true)
       }
     }
-  }
-  tools {
-    nodejs 'Node 7.10.0'
   }
 }
