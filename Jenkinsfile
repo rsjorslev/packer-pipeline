@@ -5,7 +5,6 @@ pipeline {
       steps {
         sh 'printenv'
         sh '${PACKER}/packer -v'
-        echo 'Packer File ${params.PACKERFILE}'
       }
     }
     stage('Validate') {
@@ -29,8 +28,5 @@ pipeline {
   }
   environment {
     PACKER = tool('packer100')
-  }
-  parameters {
-    string(name: 'PACKERFILE', defaultValue: 'packer.json')
   }
 }
