@@ -4,7 +4,9 @@
         "cpus": "1",
         "disk": "30720",
         "ssh_name": "runner",
-        "ssh_pass": "runner"
+        "ssh_pass": "runner",
+        "esxi_user": "{{env `ESXI_CREDS_USR`}}",
+        "esxi_pass": "{{env `ESXI_CREDS_PSW`}}"
     },
     "builders": [{
         "type": "vmware-iso",
@@ -15,12 +17,12 @@
         "vnc_bind_address": "0.0.0.0",
         "remote_type": "esx5",
         "remote_host": "192.168.234.13",
-        "remote_username": "root",
-        "remote_password": "Q1w2e3r4!",
+        "remote_username": "{{user `esxi_user`}}",
+        "remote_password": "{{user `esxi_pass`}}",
         "remote_datastore": "datastore",
         "remote_cache_datastore": "datastore",
         "remote_cache_directory": "packer",
-        "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.2-server-amd64.iso",
+        "iso_url": "/tmp/ubuntu1604.iso",
         "iso_checksum": "2bce60d18248df9980612619ff0b34e6",
         "iso_checksum_type": "md5",
         "ssh_username": "runner",
