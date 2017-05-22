@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('Validate') {
       steps {
-        echo 'Print Packer version'
         sh 'packer -v'
         sh 'packer validate ubuntu-16.04-amd64.json'
       }
