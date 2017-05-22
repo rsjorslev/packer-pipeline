@@ -20,7 +20,7 @@
         "remote_datastore": "datastore",
         "remote_cache_datastore": "datastore",
         "remote_cache_directory": "packer",
-        "iso_url": "/Users/rs/Downloads/ubuntu-16.04.2-server-amd64.iso",
+        "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.2-server-amd64.iso",
         "iso_checksum": "2bce60d18248df9980612619ff0b34e6",
         "iso_checksum_type": "md5",
         "ssh_username": "runner",
