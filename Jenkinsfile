@@ -3,9 +3,9 @@ pipeline {
   stages {
     stage('Validate') {
       steps {
-        sh '''packer -v
-echo "Hello World" > hello.txt
-date > date.txt'''
+        echo 'Print Packer version'
+        sh 'packer -v'
+        sh 'packer validate ubuntu-16.04-amd64.json'
       }
     }
     stage('Archive') {

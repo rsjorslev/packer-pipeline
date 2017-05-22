@@ -1,0 +1,66 @@
+---
+- hosts: localhost
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Create config directory
+      shell: mkdir -p /etc/runner/config
+      sudo: yes
+
+    - name: Ensures /etc/runner/config/props dir exists
+      file:
+        path: /etc/runner/config/props
+        state: directory
+
+    - name: Copy default application.properties file to config folder
+      copy:
+        src: /tmp/application.properties
+        dest: /etc/runner/config/props/application.properties
+
+    - name: Copy docker-compose.yml config folder
+      copy:
+        src: /tmp/docker-compose.yml
+        dest: /etc/runner/config/docker-compose.yml
+
+    - name: Add Cockpit repository
+      apt_repository:
+        repo: 'ppa:cockpit-project/cockpit'
+
+    - name: Clean apt cache
+      shell: sudo apt-get update
+
+    - name: Install common software requirements
+      apt: pkg={{ item }} state=installed
+      with_items:
+         - git
+         - wget
+         - curl
+         - cockpit
+         - cockpit-docker
+         - apt-transport-https
+         - ca-certificates
+         - software-properties-common
+         - python-pip
+         - open-vm-tools
+
+    - name: Add Docker GPG key
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+    - name: Add Docker repository
+      shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+    - name: Install Docker-CE
+      apt:
+        name: docker-ce
+        update_cache: yes
+
+    - name: Add runner user to Docker Group
+      shell: gpasswd -a runner docker
+      sudo: yes
+
+    - name: Install Docker Compose from PIP
+      shell: pip install docker-compose
+
+    - name: Run docker-compose up
+      shell: /usr/local/bin/docker-compose -f /etc/runner/config/docker-compose.yml up -d
