@@ -4,7 +4,7 @@ pipeline {
     PACKER = tool('packer100')
   }
   parameters {
-    string(name: 'PACKER_FILE', defaultValue: 'packer.json')
+    string(name: 'PACKERFILE', defaultValue: 'packer.json')
   }
   tools {
     nodejs 'Node 7.10.0'
@@ -14,7 +14,7 @@ pipeline {
       steps {
         sh 'printenv'
         sh '${PACKER}/packer -v'
-        echo 'Packer File: ${params.PACKER_FILE}'
+        echo "Packer File ${params.PACKERFILE}"
       }
     }
     stage('Validate') {
