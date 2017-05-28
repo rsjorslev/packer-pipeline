@@ -1,0 +1,20 @@
+---
+
+####################################################
+# VMhost
+####################################################
+
+cockpit_repo: "ppa:cockpit-project/cockpit"
+
+docker_gpg_key: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+docker_gpg_url: "https://download.docker.com/linux/ubuntu/gpg"
+
+# systemd service and timer related
+config_path: "/etc/runner/config/"
+run_cli_tool: "runcli.sh"
+commands:
+  - { cmd: 'container-update', schedule: "*-*-* 5:0:00"}
+  - { cmd: 'container-restart', schedule: "*-*-* 10:0:00"}
+  - { cmd: 'container-clean', schedule: "*-*-* 15:0:00"}
+
+...

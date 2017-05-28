@@ -1,0 +1,93 @@
+---
+  - name: Create config directory
+    file:
+      path: /etc/runner/config
+      state: directory
+
+  - name: Ensures /etc/runner/config/props dir exists
+    file:
+      path: /etc/runner/config/props
+      state: directory
+
+  - name: Copy default application.properties file to config folder
+    copy:
+      src: ../config/application.properties
+      dest: /etc/runner/config/props/application.properties
+
+  - name: Copy docker-compose.yml config folder
+    copy:
+      src: ../config/docker-compose.yml
+      dest: /etc/runner/config/docker-compose.yml
+
+  - name: Add Cockpit repository
+    apt_repository:
+      repo: "{{ cockpit_repo }}"
+      state: present
+
+  - name: Install common software requirements
+    apt: pkg={{ item }} state=installed
+    with_items:
+       - git
+       - wget
+       - curl
+       - cockpit
+       - cockpit-docker
+       - apt-transport-https
+       - ca-certificates
+       - software-properties-common
+       - python-pip
+       - open-vm-tools
+
+  - name: Add Docker GPG key
+    apt_key:
+      id: "{{ docker_gpg_key }}"
+      url: "{{ docker_gpg_url }}"
+      state: present
+
+  - name: Add Docker repository
+    apt_repository:
+      repo: "deb https://download.docker.com/linux/ubuntu xenial stable"
+      state: present
+      update_cache: yes
+
+  - name: Install Docker-CE
+    apt:
+      name: docker-ce
+      update_cache: yes
+
+  #- name: Add runner user to Docker Group
+  #  shell: gpasswd -a runner docker
+
+  - name: Install Docker Compose from PIP
+    shell: pip install docker-compose
+
+  #- name: Run docker-compose up
+  #  shell: /usr/local/bin/docker-compose -f /etc/runner/config/docker-compose.yml up -d
+
+  - name: Create systemd services
+    template:
+      dest: /etc/systemd/system/{{ item.cmd }}.service
+      src: docker-template.service.j2
+    with_items: "{{ commands }}"
+
+  - name: Create timers
+    template:
+      dest: /etc/systemd/system/{{ item.cmd }}.timer
+      src: docker-template.timer.j2
+    with_items: "{{ commands }}"
+
+  - name: Enable services
+    service:
+      name: "{{ item.cmd }}"
+      state: started
+      enabled: yes
+    with_items: "{{ commands }}"
+
+  - name: Enable timers
+    service:
+      name: "{{ item.cmd }}.timer"
+      state: started
+      enabled: yes
+    with_items: "{{ commands }}"
+
+...

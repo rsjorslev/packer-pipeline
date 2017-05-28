@@ -1,0 +1,8 @@
+---
+- name: VMhost Setup
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+  roles:
+    - vmhost
+...

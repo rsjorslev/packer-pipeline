@@ -1,0 +1,5 @@
+[Unit]
+Description={{ item.cmd }}
+
+[Service]
+ExecStart={{ config_path }}{{ run_cli_tool }} {{ item.cmd }}
