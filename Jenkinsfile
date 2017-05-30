@@ -28,7 +28,7 @@ pipeline {
   }
   environment {
     PACKER = tool('packer100')
-    ESXI_CREDS = credentials('nesxi-root')
-    ESXI_HOST = '172.16.72.152'
+    ESXI_CREDS = credentials('esx01.tstdmn.nu')
+    ESXI_HOST = 'esx01.tstdmn.nu'
   }
 }
