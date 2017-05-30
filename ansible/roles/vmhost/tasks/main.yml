@@ -11,13 +11,18 @@
 
   - name: Copy default application.properties file to config folder
     copy:
-      src: ../config/application.properties
+      src: /tmp/application.properties
       dest: /etc/runner/config/props/application.properties
 
-  - name: Copy docker-compose.yml config folder
+  - name: Copy docker-compose.yml to config folder
     copy:
-      src: ../config/docker-compose.yml
+      src: /tmp/docker-compose.yml
       dest: /etc/runner/config/docker-compose.yml
+
+  - name: Copy runcli.sh to config folder
+    copy:
+      src: /tmp/runcli.sh
+      dest: /etc/runner/config/runcli.sh
 
   - name: Add Cockpit repository
     apt_repository:
@@ -55,14 +60,14 @@
       name: docker-ce
       update_cache: yes
 
-  #- name: Add runner user to Docker Group
-  #  shell: gpasswd -a runner docker
+  - name: Add runner user to Docker Group
+    shell: gpasswd -a runner docker
 
   - name: Install Docker Compose from PIP
     shell: pip install docker-compose
 
-  #- name: Run docker-compose up
-  #  shell: /usr/local/bin/docker-compose -f /etc/runner/config/docker-compose.yml up -d
+  - name: Run docker-compose up
+    shell: /usr/local/bin/docker-compose -f /etc/runner/config/docker-compose.yml up -d
 
   - name: Create systemd services
     template:

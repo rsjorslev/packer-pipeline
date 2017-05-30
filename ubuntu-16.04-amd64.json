@@ -3,6 +3,7 @@
         "memory": "1024",
         "cpus": "1",
         "disk": "30720",
+        "network": "VM Network",
         "ssh_name": "runner",
         "ssh_pass": "runner",
         "esxi_user": "{{env `ESXI_CREDS_USR`}}",
@@ -39,7 +40,7 @@
         "vmx_data": {
           "memsize": "{{user `memory`}}",
           "numvcpus": "{{user `cpus`}}",
-          "ethernet0.networkName": "VM Network"
+          "ethernet0.networkName": "{{user `network`}}"
         },
         "boot_wait": "15s",
         "boot_command": [
@@ -82,13 +83,8 @@
     },
     {
       "type": "file",
-      "source": "config/application.properties",
-      "destination": "/tmp/application.properties"
-    },
-    {
-      "type": "file",
-      "source": "config/docker-compose.yml",
-      "destination": "/tmp/docker-compose.yml"
+      "source": "config",
+      "destination": "/tmp"
     },
     {
       "type": "ansible-local",
