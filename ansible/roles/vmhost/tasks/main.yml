@@ -11,17 +11,17 @@
 
   - name: Copy default application.properties file to config folder
     copy:
-      src: /tmp/application.properties
+      src: /tmp/config/application.properties
       dest: /etc/runner/config/props/application.properties
 
   - name: Copy docker-compose.yml to config folder
     copy:
-      src: /tmp/docker-compose.yml
+      src: /tmp/config/docker-compose.yml
       dest: /etc/runner/config/docker-compose.yml
 
   - name: Copy runcli.sh to config folder
     copy:
-      src: /tmp/runcli.sh
+      src: /tmp/config/runcli.sh
       dest: /etc/runner/config/runcli.sh
 
   - name: Add Cockpit repository
