@@ -6,7 +6,8 @@
         "ssh_name": "runner",
         "ssh_pass": "runner",
         "esxi_user": "{{env `ESXI_CREDS_USR`}}",
-        "esxi_pass": "{{env `ESXI_CREDS_PSW`}}"
+        "esxi_pass": "{{env `ESXI_CREDS_PSW`}}",
+        "esxi_host": "{{env `ESXI_HOST`}}"
     },
     "builders": [{
         "type": "vmware-iso",
@@ -16,7 +17,7 @@
         "vnc_port_max": "5911",
         "vnc_bind_address": "0.0.0.0",
         "remote_type": "esx5",
-        "remote_host": "192.168.234.13",
+        "remote_host": "{{user `esxi_host`}}",
         "remote_username": "{{user `esxi_user`}}",
         "remote_password": "{{user `esxi_pass`}}",
         "remote_datastore": "datastore",
@@ -91,7 +92,8 @@
     },
     {
       "type": "ansible-local",
-      "playbook_file": "ansible/playbook.yml"
+      "playbook_file": "ansible/playbook.yml",
+      "playbook_dir": "ansible"
     },
     {
       "type": "shell",
